@@ -217,16 +217,14 @@ gulp.task('clean:docs', function () {
 
 // Spin up livereload server and listen for file changes
 gulp.task('listen', function () {
-  livereload.listen();
   gulp.watch(paths.input).on('change', function(file) {
-    gulp.start('default');
     gulp.start('refresh');
   });
 });
 
 // Run livereload after file change
-gulp.task('refresh', ['compile'], function () {
-  livereload.changed();
+gulp.task('refresh', function () {
+  gulp.start('compile');
 });
 
 
@@ -253,19 +251,12 @@ gulp.task('docs', [
 
 // Compile files and generate docs (default)
 gulp.task('default', [
-  'compile'
-  //,'docs'
-]);
-
-// Compile files and generate docs when something changes
-gulp.task('watch', [
-  'listen',
-  'default',
+  'compile',
   'webserver'
 ]);
 
 // Create and open a webserver with livereload
-gulp.task('webserver', function() {
+gulp.task('webserver', ['listen'], function() {
   gulp.src('./dist')
     .pipe(server({
       livereload: true,
