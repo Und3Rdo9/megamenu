@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Mega Menu Plugin Demo</title>
+<link rel="stylesheet" href="https://dhbhdrzi4tiry.cloudfront.net/cdn/sites/foundation.min.css">
+  <style>
+    .body {
+      background: blue !important;
+    }
+    .mega-menu {
+      position: relative;
+      border: 1px solid black;
+      padding: 5px;
+      width: 100%;
+      background: yellow;
+      height: auto;
+      transition: height .2s ease;
+    }
+
+    .mega-menu__top-level-nav {
+      display: flex;
+      flex-direction: column;
+      margin: 0;
+      border: 1px solid dodgerblue;
+      padding: 5px;
+      width: 100%;
+      position: relative;
+      transform: translateX(0);
+      transition: transform .3s ease;
+    }
+
+    .mega-menu__top-level-nav--active {
+      transform: translateX(-100%);
+    }
+
+    .mega-menu__item {
+      width: 100%;
+    }
+
+    .mega-menu__link {
+
+    }
+
+    .mega-menu__tabs-container {
+      position: absolute;
+      top: 0;
+      left: 100%;
+      width: 100%;
+      border: 1px solid gold;
+      padding: 5px;
+      opacity: 0;
+      height: 0;
+      transition: all .3s ease;
+    }
+
+    .mega-menu__tabs-container--visible {
+      opacity: 1;
+      height: auto;
+    }
+
+    .mega-menu__tabs-container--active {
+      transform: translateX(-100%);
+    }
+
+    .mega-menu__tabs {
+      position: absolute;
+      top: 0;
+      left: 100%;
+      width: 100%;
+      border: 1px solid silver;
+      padding: 5px;
+    }
+
+    .mega-menu__tab-panel {
+      display: none;
+      background: magenta;
+      width: 100%;
+    }
+
+    .mega-menu__tab-panel--active {
+      display: flex;
+    }
+
+    .mega-menu__go-back-to-main {
+      border: 1px solid black;
+      display: block;
+      padding: 5px;
+    }
+
+  </style>
+</head>
+<body>
+
+  <div class="mega-menu" id="megaMenu">
+    <ul class="mega-menu__top-level-nav mega-menu__top-level-nav">
+      <li class="mega-menu__item mega-menu__item--has-children link1">
+        <a href="/test" class="mega-menu__link">
+          Link 1 - Advies bij
+        </a>
+        <div class="mega-menu__tabs-container mega-menu__tabs-container">
+          <button class="mega-menu__go-back-to-main">Back</button>
+          <ul class="mega-menu__tab-list">
+            <li class="mega-menu__tab-list-item">
+              <button class="mega-menu__tab-item-toggle" data-toggle-tab="1-1" style="height: 250px !important; display: block;">
+                Sublink 1 - 1 - Sport
+
+              </button>
+            </li>
+            <li class="mega-menu__tab-list-item">
+              <button class="mega-menu__tab-item-toggle" data-toggle-tab="1-2">
+                Sublink 1 - 2 - Vitaliteit
+              </button>
+            </li>
+          </ul>
+          <div class="mega-menu__tabs">
+            <section class="mega-menu__tab-panel" data-tab="1-1">Tab 1 - 1</section>
+            <section class="mega-menu__tab-panel" data-tab="1-2">Tab 1 - 2</section>
+          </div>
+        </div>
+      </li>
+      <li class="mega-menu__item mega-menu__item--has-children link2">
+        <a href="/test.html" class="mega-menu__link">
+          Link 2 - Producten
+        </a>
+        <div class="mega-menu__tabs-container mega-menu__tabs-container">
+          <ul class="mega-menu__tab-list">
+            <li class="mega-menu__tab-list-item">
+              <button class="mega-menu__tab-item-toggle" data-toggle-tab="2-1">
+                Sublink 2 - 1 - Superfoods
+              </button>
+            </li>
+            <li class="mega-menu__tab-list-item">
+              <button class="mega-menu__tab-item-toggle" data-toggle-tab="2-2">
+                Sublink 2 - 2 - Zapper
+              </button>
+            </li>
+          </ul>
+          <div class="mega-menu__tabs">
+            <section class="mega-menu__tab-panel" data-tab="2-1">Tab 2 - 1</section>
+            <section class="mega-menu__tab-panel" data-tab="2-2">Tab 2 - 2</section>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <div class="row">
+    <div class="medium-8 columns">
+      <p><img src="https://placehold.it/900x450&amp;text=Promoted Article" alt="main article image"></p>
+    </div>
+    <div class="medium-4 columns">
+      <p><img src="https://placehold.it/400x200&amp;text=Other cool article" alt="article promo image"></p>
+      <p><img src="https://placehold.it/400x200&amp;text=Other cool article" alt="article promo image"></p>
+    </div>
+  </div>
+
+  <div class="row column">
+    <h4 style="margin: 0;" class="text-center">BREAKING NEWS</h4>
+  </div>
+
+  <div class="row small-up-3 medium-up-4 large-up-5">
+    <div class="column">
+      <img src="https://placehold.it/400x370&amp;text=Look at me!" alt="image for article">
+    </div>
+    <div class="column">
+      <img src="https://placehold.it/400x370&amp;text=Look at me!" alt="image for article">
+    </div>
+    <div class="column">
+      <img src="https://placehold.it/400x370&amp;text=Look at me!" alt="image for article">
+    </div>
+    <div class="column show-for-medium">
+      <img src="https://placehold.it/400x370&amp;text=Look at me!" alt="image for article">
+    </div>
+    <div class="column show-for-large">
+      <img src="https://placehold.it/400x370&amp;text=Look at me!" alt="image for article">
+    </div>
+  </div>
+
+
+  <script src="./../js/megaMenu.js"></script>
+  <script>
+  (function(){
+    // init mega menu
+
+    var instance = new MegaMenu({});
+  }());
+  </script>
+</body>
+</html>
