@@ -32,7 +32,7 @@
     tabPanelSelector:     '[data-tab]',
     tabPanelClass:        'mega-menu__tab-panel',
     activeClassSuffix:    '--active',
-    breakpoint:           '(min-width: 764px)'
+    breakpoint:           '(min-width: 768px)'
   };
 
 
@@ -104,6 +104,10 @@
     // Merge options into defaults
     var settings = extend(defaults, options || {});
 
+    var breakpoint = window.matchMedia(settings.breakpoint);
+
+    console.log(breakpoint);
+
 
     this.elem = document.querySelectorAll(settings.megaMenuContainer)[0];
 
@@ -113,11 +117,9 @@
     }
 
     this.topLevelNav = this.elem.getElementsByClassName(settings.topLevelClass)[0];
-    this.topLevelItems = this.elem.getElementsByClassName(settings.topLevelItemClass);
     this.tabsContainers = this.elem.getElementsByClassName(settings.submenuClass);
-    this.backToMainButtons = this.elem.getElementsByClassName(settings.goBackToMainClass);
-    this.tabToggles = this.elem.querySelectorAll(settings.tabToggleSelector);
     this.tabs = this.elem.querySelectorAll(settings.tabPanelSelector);
+    this.activeTab = undefined;
 
     this.adjustHeight = function (visibleElement) {
 
@@ -125,7 +127,7 @@
       this.elem.style.height = newHeight + 'px';
     };
 
-    this.toggleSubmenu = function (item, e) {
+    this.toggleSubmenu = function (item) {
       // toggle a submenu here
       this.hideAllSubmenus();
       if (item) {
@@ -134,7 +136,6 @@
         this.showSubmenu(submenu);
       }
       else {
-        e.stopPropagation(); // stop from propagating events to elements higher in the DOM tree
         this.topLevelNav.classList.remove(settings.topLevelClass + settings.activeClassSuffix);
         this.adjustHeight(this.topLevelNav);
       }
@@ -153,119 +154,136 @@
       this.adjustHeight(submenu);
     }
 
-    this.toggleTabs = function(currentToggleTarget, allTabs) {
+    this.toggleTabs = function(currentToggleTarget) {
+      console.log('toggling : ', currentToggleTarget);
       // Variables
       var tab = document.querySelector('[data-tab="'+currentToggleTarget+'"]'); // The selected tab
       if ( !tab ) return;
-      var tabParent = tab.closest('.' + settings.submenuClass);
 
       // Show or hide each tab
-      allTabs.forEach( function (tab) {
+      this.tabs.forEach( function (tab) {
 
         var tabTarget = tab.getAttribute('data-tab');
-        // If this is the selected tab, show it
+        // If this is the selected tab, toggle it
         if ( tabTarget === currentToggleTarget ) {
-          tab.classList.add(settings.tabPanelClass + settings.activeClassSuffix );
-
-          tabParent.classList.add(settings.submenuClass + settings.activeClassSuffix);
-          this.adjustHeight(tab);
+          console.log('match');
+          this.activeTab = this.activeTab !== currentToggleTarget ? currentToggleTarget : undefined;
+          this.toggleTab(tab);
+          this.toggleTabParent(tab);
           return;
         }
 
         // Otherwise, hide it
         tab.classList.remove( settings.tabPanelClass + settings.activeClassSuffix );
-      });
+      }.bind(this));
     }
 
-    this.toggleTabsParent = function (tab) {
-
+    this.toggleTabParent = function (tab) {
+      var tabParent = tab.closest('.' + settings.submenuClass);
+      if (!tabParent) return;
+      // add classes if an activeTab is currently undefined
+      // remove active classes otherwise
+      tabParent.classList.toggle(settings.submenuClass + settings.activeClassSuffix, this.activeTab);
+      if (!this.activeTab) {
+        this.adjustHeight(tabParent);
+      }
     };
 
-    this.toggleTab = function (e) {
+    this.toggleTab = function (tab) {
+      if (!tab) return;
+      // add classes if an activeTab is currently undefined
+      // remove active classes otherwise
+      tab.classList.toggle(settings.tabPanelClass + settings.activeClassSuffix, this.activeTab);
+      // set megaMenu height to tab if active
+      // set megaMenu to height of parent if no tab is active
+      if (this.activeTab) {
+        this.adjustHeight(tab);
+      }
+    };
+
+    this.handleToggleTab = function (e) {
       var currentToggleTarget = e.target.getAttribute('data-toggle-tab');
-      toggleTabs(currentToggleTarget, this.tabs);
-      e.stopPropagation();
+      this.toggleTabs(currentToggleTarget);
     };
 
-    var handleTopLevelItemInteraction = function (e) {
-      console.log('handling top level interaction');
-      e.preventDefault(); // prevent link if any
+    this.handleEvents = function (e) {
+      console.log('handling event for =>', e);
+      var target = e.target;
 
-      // TO-DO: add click / hover distinction for mobile/desktop breakpoints
+      // bail if document interaction is not within mega menu
+      if (!(target.closest(settings.megaMenuContainer))) return;
 
-      var target =  e.target;
+      var type = e.type;
+      // bail if event type is mouseover but we are still on mobile resolution
+      if (type === 'mouseover' && !(breakpoint.matches)) return;
 
+      // check if we click on most deeply nested element with action
+      // otherwise, continue up the DOM tree...
+      if (target.classList.contains('mega-menu__go-back-to-tab-list') && type === 'click') {
+        this.toggleTabs(this.activeTab);
+        return;
+      }
+
+      // check if click inside a tab of the mega menu
+      // avoid any further actions
+      // proceed with default action of clicked element
+      if (target.classList.contains('mega-menu__tabs') || target.closest('.mega-menu__tabs')) {
+        console.log('clicked inside tabs content container');
+        return true; // do whatever
+      }
+
+      // toggle a tab when clicked/hovered on a toggle
+      if (target.matches(settings.tabToggleSelector)) {
+        e.preventDefault(); // prevent link if any
+        this.handleToggleTab(e);
+        return;
+      }
+
+      // go back to main menu event
+      if (target.classList.contains(settings.goBackToMainClass) && type === 'click') {
+        this.toggleSubmenu.bind(this, null)();
+        return;
+      }
+
+      // main menu item click/hover event
       // check if we clicked on the li parent
       // or if we still need to find the closest li parent
       if (!target.classList.contains(settings.topLevelItemClass) && target.closest('.' + settings.topLevelItemClass)) {
+        e.preventDefault(); // prevent link if any
         target = target.closest('.' + settings.topLevelItemClass);
+        this.toggleSubmenu(target, e);
+        return;
       }
-      else {
-        //
-      }
-
-      this.toggleSubmenu(target, e);
-    };
-
-    /**
-    * A private method
-    */
-    var bindListeners = function () {
-      for (var i = 0; i < this.topLevelItems.length; i++) {
-        this.topLevelItems[i].addEventListener('click', handleTopLevelItemInteraction.bind(this), false);
-      }
-
-      for (var k = 0; k < this.backToMainButtons.length; k++) {
-        this.backToMainButtons[k].addEventListener('click', this.toggleSubmenu.bind(this, null), true);
-      }
-
-      for (var l = 0; l < this.tabToggles.length; l++) {
-        this.tabToggles[l].addEventListener('click', this.toggleTab.bind(this), true);
-      }
-
-    };
-
-    var removeListeners = function () {
-      for (var j = 0; j < this.topLevelItems.length; j++) {
-        this.topLevelItems[j].removeEventListener('click', handleTopLevelItemInteraction);
-      }
-
-      for (var i = 0; i < this.backToMainButtons.length; i++) {
-        this.backToMainButtons[i].removeEventListener('click', this.toggleSubmenu);
+      // we clicked on the li directly
+      else if (target.classList.contains(settings.topLevelItemClass)){
+        e.preventDefault(); // prevent link if any
+        this.toggleSubmenu(target, e);
+        return;
       }
     }
 
-    /**
-    * A public method
-    */
-    // publicAPIs.doSomething = function () {
-    // 	somePrivateMethod();
-    // 	// Code goes here...
-    // };
+    this.bindListeners = function () {
+      document.addEventListener('click', this.handleEvents.bind(this), false);
+      document.addEventListener('mouseover', this.handleEvents.bind(this));
+    };
 
-    /**
-    * Another public method
-    */
+    this.removeListeners = function () {
+      document.removeEventListener('click', this.handleEvents.bind(this), false);
+    }
+
     this.init = function (options) {
-
-      bindListeners.bind(this)();
-
-
-      // Code goes here...
-
-      //alert('it works');
-
+      this.bindListeners();
     };
 
     this.destroy = function () {
-      removeListeners.bind(this)();
-    }
+      this.removeListeners();
+    };
 
     // Initialize the plugin
     this.init(options);
 
     // Return the public APIs
-    return publicAPIs;
+    return this;
 
   };
 

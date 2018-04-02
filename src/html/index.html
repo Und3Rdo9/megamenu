@@ -5,148 +5,90 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Mega Menu Plugin Demo</title>
-<link rel="stylesheet" href="https://dhbhdrzi4tiry.cloudfront.net/cdn/sites/foundation.min.css">
-  <style>
-    body {
-      background: white !important;
-    }
-    .mega-menu {
-      position: relative;
-      border: 1px solid black;
-      padding: 5px;
-      width: 100%;
-      background: yellow;
-      height: auto;
-      transition: height .2s ease;
-    }
-
-    .mega-menu__top-level-nav {
-      display: flex;
-      flex-direction: column;
-      margin: 0;
-      border: 1px solid dodgerblue;
-      padding: 5px;
-      width: 100%;
-      position: relative;
-      transform: translateX(0);
-      transition: transform .3s ease;
-    }
-
-    .mega-menu__top-level-nav--active {
-      transform: translateX(-100%);
-    }
-
-    .mega-menu__item {
-      width: 100%;
-    }
-
-    .mega-menu__link {
-
-    }
-
-    .mega-menu__tabs-container {
-      position: absolute;
-      top: 0;
-      left: 100%;
-      width: 100%;
-      border: 1px solid gold;
-      padding: 5px;
-      opacity: 0;
-      height: 0;
-      transition: all .3s ease;
-    }
-
-    .mega-menu__tabs-container--visible {
-      opacity: 1;
-      height: auto;
-    }
-
-    .mega-menu__tabs-container--active {
-      transform: translateX(-100%);
-    }
-
-    .mega-menu__tabs {
-      position: absolute;
-      top: 0;
-      left: 100%;
-      width: 100%;
-      border: 1px solid silver;
-      padding: 5px;
-    }
-
-    .mega-menu__tab-panel {
-      display: none;
-      background: magenta;
-      width: 100%;
-    }
-
-    .mega-menu__tab-panel--active {
-      display: flex;
-    }
-
-    .mega-menu__go-back-to-main {
-      border: 1px solid black;
-      display: block;
-      padding: 5px;
-    }
-
-  </style>
+  <link rel="stylesheet" href="https://dhbhdrzi4tiry.cloudfront.net/cdn/sites/foundation.min.css">
+  <link rel="stylesheet" href="./css/mega-menu.css">
 </head>
 <body>
   <h1>Mega Menu Demo 3</h1>
+  <nav class="mega-menu-wrapper">
+    <div class="mega-menu" id="megaMenu">
+      <ul class="mega-menu__top-level-nav mega-menu__top-level-nav">
+        <li class="mega-menu__item mega-menu__item--has-children link1">
+          <a href="/test" class="mega-menu__link">
+            Link 1 - Advies bij
+          </a>
+          <div class="mega-menu__tabs-container mega-menu__tabs-container">
+            <button class="mega-menu__go-back-to-main">Back</button>
+            <ul class="mega-menu__tab-list">
+              <li class="mega-menu__tab-list-item">
+                <button class="mega-menu__tab-item-toggle" data-toggle-tab="1-1">
+                  Sublink 1 - 1 - Sport
 
-  <div class="mega-menu" id="megaMenu">
-    <ul class="mega-menu__top-level-nav mega-menu__top-level-nav">
-      <li class="mega-menu__item mega-menu__item--has-children link1">
-        <a href="/test" class="mega-menu__link">
-          Link 1 - Advies bij
-        </a>
-        <div class="mega-menu__tabs-container mega-menu__tabs-container">
-          <button class="mega-menu__go-back-to-main">Back</button>
-          <ul class="mega-menu__tab-list">
-            <li class="mega-menu__tab-list-item">
-              <button class="mega-menu__tab-item-toggle" data-toggle-tab="1-1" style="height: 250px !important; display: block;">
-                Sublink 1 - 1 - Sport
+                </button>
+              </li>
+              <li class="mega-menu__tab-list-item">
+                <button class="mega-menu__tab-item-toggle" data-toggle-tab="1-2">
+                  Sublink 1 - 2 - Vitaliteit
+                </button>
+              </li>
+            </ul>
+            <div class="mega-menu__tabs">
+              <section class="mega-menu__tab-panel" data-tab="1-1">
+                <div class="mega-menu__tab-panel-main">
+                  <button class="mega-menu__go-back-to-tab-list">Go back</button>
+                  <p>Tab 1 - 1</p>
+                  <p><a href="//google.com">google</a></p>
+                </div>
+                <aside class="mega-menu__tab-panel-aside">
+                  <div>
+                    <img src="https://placehold.it/400x370&amp;text=Look at me!" alt="image for article">
+                    <h4>Promoted product</h4>
+                  </div>
+                  <div>
+                    <img src="https://placehold.it/400x370&amp;text=Look at me!" alt="image for article">
+                    <h4>Promoted product</h4>
+                  </div>
+                </aside>
 
-              </button>
-            </li>
-            <li class="mega-menu__tab-list-item">
-              <button class="mega-menu__tab-item-toggle" data-toggle-tab="1-2">
-                Sublink 1 - 2 - Vitaliteit
-              </button>
-            </li>
-          </ul>
-          <div class="mega-menu__tabs">
-            <section class="mega-menu__tab-panel" data-tab="1-1">Tab 1 - 1</section>
-            <section class="mega-menu__tab-panel" data-tab="1-2">Tab 1 - 2</section>
+
+              </section>
+              <section class="mega-menu__tab-panel" data-tab="1-2">Tab 1 - 2</section>
+            </div>
           </div>
-        </div>
-      </li>
-      <li class="mega-menu__item mega-menu__item--has-children link2">
-        <a href="/test.html" class="mega-menu__link">
-          Link 2 - Producten
-        </a>
-        <div class="mega-menu__tabs-container mega-menu__tabs-container">
-          <ul class="mega-menu__tab-list">
-            <li class="mega-menu__tab-list-item">
-              <button class="mega-menu__tab-item-toggle" data-toggle-tab="2-1">
-                Sublink 2 - 1 - Superfoods
-              </button>
-            </li>
-            <li class="mega-menu__tab-list-item">
-              <button class="mega-menu__tab-item-toggle" data-toggle-tab="2-2">
-                Sublink 2 - 2 - Zapper
-              </button>
-            </li>
-          </ul>
-          <div class="mega-menu__tabs">
-            <section class="mega-menu__tab-panel" data-tab="2-1">Tab 2 - 1</section>
-            <section class="mega-menu__tab-panel" data-tab="2-2">Tab 2 - 2</section>
+        </li>
+        <li class="mega-menu__item mega-menu__item--has-children link2">
+          <a href="/test.html" class="mega-menu__link">
+            Link 2 - Producten
+          </a>
+          <div class="mega-menu__tabs-container mega-menu__tabs-container">
+            <button class="mega-menu__go-back-to-main">Back</button>
+            <ul class="mega-menu__tab-list">
+              <li class="mega-menu__tab-list-item">
+                <button class="mega-menu__tab-item-toggle" data-toggle-tab="2-1">
+                  Sublink 2 - 1 - Superfoods
+                </button>
+              </li>
+              <li class="mega-menu__tab-list-item">
+                <button class="mega-menu__tab-item-toggle" data-toggle-tab="2-2">
+                  Sublink 2 - 2 - Zapper
+                </button>
+              </li>
+            </ul>
+            <div class="mega-menu__tabs">
+              <section class="mega-menu__tab-panel" data-tab="2-1">
+                <button class="mega-menu__go-back-to-tab-list">&lt; Go back</button>
+                <p>
+                  Tab 2 - 1
+                </p>
+              </section>
+              <section class="mega-menu__tab-panel" data-tab="2-2">Tab 2 - 2</section>
+            </div>
           </div>
-        </div>
-      </li>
-    </ul>
-  </div>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
 
   <div class="row">
     <div class="medium-8 columns">

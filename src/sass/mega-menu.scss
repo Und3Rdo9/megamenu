@@ -1,0 +1,220 @@
+$mm-breakpoint: 768px;
+
+@mixin mm-breakpoint-up {
+  @media (min-width: #{$mm-breakpoint}) {
+    @content;
+  }
+}
+
+@mixin mm-nav-link() {
+  display: block;
+  width: 100%;
+  font-size: 18px;
+  line-height: 22px;
+  padding: 9px 40px 9px 10px;
+  position: relative;
+  color: black;
+  background: white;
+  transition: all .3s ease;
+
+  &:hover, &:active, &:focus {
+    background: beige;
+    color: purple;
+
+    &:after {
+      right: 5px;
+    }
+  }
+
+  &:after {
+    content: "\027A1";
+    display: block;
+    font-size: 18px;
+    line-height: 22px;
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: right .3s ease;
+  }
+}
+
+.mega-menu-wrapper {
+  border: 1px solid darken(beige, 25%);
+  overflow: hidden;
+
+  @include mm-breakpoint-up {
+    overflow: visible;
+  }
+}
+
+.mega-menu {
+  position: relative;
+  width: 100%;
+  background: white;
+  height: auto;
+  transition: height .2s ease;
+
+  @include mm-breakpoint-up {
+    height: auto !important; // override autoHeight function
+  }
+
+
+  &__top-level-nav {
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+    margin: 0;
+    width: 100%;
+    position: relative;
+    transform: translateX(0);
+    transition: transform .3s ease;
+
+    &--active {
+      transform: translateX(-100%);
+      @include mm-breakpoint-up {
+        transform: none;
+      }
+    }
+
+    @include mm-breakpoint-up {
+      flex-direction: row;
+    }
+  }
+
+  &__item {
+    width: 100%;
+    @include mm-breakpoint-up {
+      width: auto;
+    }
+  }
+
+  &__link {
+    @include mm-nav-link;
+    @include mm-breakpoint-up {
+      &:after {
+        content: "\02B07";
+      }
+
+      &:active, &:focus, &:hover {
+        &:after {
+          right: 10px;
+        }
+      }
+    }
+  }
+
+  &__tabs-container {
+    position: absolute;
+    top: 0;
+    left: 100%;
+    width: 100%;
+    opacity: 0;
+    height: 0;
+    overflow: hidden;
+    transition: all .3s ease;
+
+    &--visible {
+      opacity: 1;
+      overflow: visible;
+      height: auto;
+    }
+
+    &--active {
+      transform: translateX(-100%);
+    }
+
+    @include mm-breakpoint-up {
+      top: 100%;
+      left: 0;
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+
+      &--active {
+        transform: none;
+      }
+    }
+  }
+
+  &__tab-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    width: 100%;
+    position: relative;
+
+    @include mm-breakpoint-up {
+      width: 25%;
+      height: auto;
+      background: white;
+    }
+  }
+
+  &__tab-list-item {
+    width: 100%;
+  }
+
+  &__tab-item-toggle {
+    text-align: left;
+    @include mm-nav-link;
+  }
+
+  &__tabs {
+    position: absolute;
+    top: 0;
+    left: 100%;
+    width: 100%;
+
+    @include mm-breakpoint-up {
+      position: relative;
+      top: auto;
+      left: auto;
+      width: 75%;
+      display: flex;
+      height: auto;
+      background: beige;
+    }
+  }
+
+  &__tab-panel {
+    display: none;
+    width: 100%;
+
+    &--active {
+      display: flex;
+    }
+  }
+
+  &__tab-panel-main {
+    background: beige;
+    width: 100%;
+    padding: 15px;
+  }
+
+  &__tab-panel-aside {
+    display: none;
+  }
+
+  &__go-back-to-main,
+  &__go-back-to-tab-list {
+    border: 1px solid black;
+    border-radius: 4px;
+    font-size: 14px;
+    line-height: 18px;
+    padding: 11px 5px;
+    display: block;
+    margin: 10px;
+
+    &:before {
+      content: "\02B05";
+      display: inline-block;
+      margin-right: 10px;
+    }
+
+    @include mm-breakpoint-up {
+      display: none;
+    }
+  }
+}
