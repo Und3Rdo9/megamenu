@@ -218,14 +218,14 @@
       if (type === 'mouseover' && !(breakpoint.matches)) return;
 
       // check if we click on most deeply nested element with action
-      // otherwise, continue up the DOM tree...
+      // otherwise, continue up the DOM tree with our element matching...
       if (target.classList.contains('mega-menu__go-back-to-tab-list') && type === 'click') {
         this.toggleTabs(this.activeTab);
         return;
       }
 
       // check if click inside a tab of the mega menu
-      // avoid any further actions
+      // avoid any further actions from this function
       // proceed with default action of clicked element
       if (target.classList.contains('mega-menu__tabs') || target.closest('.mega-menu__tabs')) {
         console.log('clicked inside tabs content container');
@@ -264,11 +264,12 @@
 
     this.bindListeners = function () {
       document.addEventListener('click', this.handleEvents.bind(this), false);
-      document.addEventListener('mouseover', this.handleEvents.bind(this));
+      document.addEventListener('mouseover', this.handleEvents.bind(this), false);
     };
 
     this.removeListeners = function () {
       document.removeEventListener('click', this.handleEvents.bind(this), false);
+      document.removeEventListener('mouseover', this.handleEvents.bind(this), false);
     }
 
     this.init = function (options) {
